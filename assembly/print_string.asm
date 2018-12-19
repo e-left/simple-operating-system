@@ -1,3 +1,4 @@
+[bits 16]
 print_string:
     pusha
 
@@ -8,7 +9,7 @@ rep567:
     
     mov al, [bx]
     cmp al, 0 
-    je end
+    je end989
     
     int 0x10
 
@@ -17,6 +18,6 @@ rep567:
 
 
 
-end:
+end989:
     popa 
     ret
