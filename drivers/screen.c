@@ -10,7 +10,7 @@ int get_cursor() {
 }
 
 void set_cursor(int offset) {
-    offset /= 2; //we change from 2 byte offset to single byte offset,since the cursor uses that instead of the 2 cell mechanism
+    offset = offset / 2; //we change from 2 byte offset to single byte offset,since the cursor uses that instead of the 2 cell mechanism
     //same as the get cursor function,only now we write on the corresponding data registers
     port_byte_out(REG_SCREEN_CTRL, 14);
     port_byte_out(REG_SCREEN_DATA, (unsigned char)(offset >> 8));
@@ -38,7 +38,7 @@ void print_char(char c, int row, int col, char attribute) {
 
     int offset;
     //if row and col are non negative valid screen offsets,use them
-    if((row >= 0)&& (row < MAX_ROWS) &&(col >= 0) && (col < MAX_COLS)) {
+    if((row >= 0) &&(col >= 0)) {
         offset = get_screen_offset(row, col);
     }   else    {
         //we just get the cursor position
@@ -54,28 +54,32 @@ void print_char(char c, int row, int col, char attribute) {
         vidmem[offset + 1] = attribute;
     }
 
-    offset += 2;    //remember each cell occupies two bytes on memory
+    offset =+ 2;    //remember each cell occupies two bytes on memory
     offset = handle_scrolling(offset);  //handle scrolling for when we get at the end of the screen
 
     set_cursor(offset); //update our cursor position 
 }
 
 void print_at(char* string, int col, int row) {
-    if((row >= 0)&& (row < MAX_ROWS) &&(col >= 0) && (col < MAX_COLS)) {
+    if((row >= 0)&&(col >= 0)) {
         //if provided position is valid we use that
         set_cursor(get_screen_offset(row,col));
+    }   else    {
+        set_cursor(get_cursor());
     }
 
     int i;
     for(i = 0;string[i] !=0;i++){
         print_char(string[i],row,col,WHITE_ON_BLACK);
+        
+
     }
 }
 
 void print(char* string) {
     print_at(string, -1, -1);
 }
-
+//set_cursor and get screen offset working
 void clear_screen() {
     int row = 0;
     int col = 0;
