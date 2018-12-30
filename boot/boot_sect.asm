@@ -39,11 +39,11 @@ BEGIN_PM:   ; Known routine we chose to jump to when entering 32 bit protected m
     jmp $
 
          
-%include "./boot/print_string.asm"
-%include "./boot/disk_load.asm"
-%include "./boot/gdt.asm"                   ;we need the ./boot/ part in the beginning because we are compiling from the home directory
-%include "./boot/print_string_32.asm"
-%include "./boot/switch_to_32.asm"
+%include "print_string.asm"
+%include "disk_load.asm"
+%include "gdt.asm"                   
+%include "print_string_32.asm"
+%include "switch_to_32.asm"
 
 MSG_16_BIT: db  'Started in 16 - bit Real Mode' , 0
 MSG_32_BIT:  db 'Successfully entered 32 bit protected mode',0
